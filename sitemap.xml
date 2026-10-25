@@ -4,10 +4,11 @@
 
   DEPLOYED DOMAIN: data-agent.me
   ==============================
-  The domain is carried in EIGHTEEN files: this file, website/robots.txt,
-  and all sixteen HTML pages - each of which carries it in its og:url and
-  og:image tags. The og:url is the link a visitor sees when the page is
-  shared, so update all of them together if the domain ever changes.
+  The domain is carried in TWENTY-ONE files: this file, website/robots.txt,
+  all seventeen HTML pages (each carries it in its og:url and og:image tags),
+  and the CSP blocks in netlify.toml / vercel.json. The og:url is the link a
+  visitor sees when the page is shared, so update all of them together if the
+  domain ever changes.
 
   The site URL is NOT derived from window.DATAAGENT_REPO_URL in
   website/js/main.js: that constant is the GitHub repository that publishes
@@ -71,6 +72,12 @@
     <lastmod>2026-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://data-agent.me/account.html</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://data-agent.me/blog.html</loc>

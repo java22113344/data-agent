@@ -3,9 +3,10 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #  DEPLOYED DOMAIN: data-agent.me
 #
-#  This domain is carried in EIGHTEEN files (sixteen HTML pages in their
-#  og:url / og:image tags, this file, and sitemap.xml). If the site moves to
-#  another domain, update all of them together.
+#  This domain is carried in TWENTY-ONE files (seventeen HTML pages in their
+#  og:url / og:image tags, this file, sitemap.xml, and the CSP blocks in
+#  netlify.toml / vercel.json). If the site moves to another domain, update
+#  all of them together.
 #
 #  The site URL is NOT derived from window.DATAAGENT_REPO_URL in
 #  website/js/main.js: that constant is the GitHub repository that publishes

@@ -20,10 +20,11 @@
 #     is a user-initiated payment hand-off, not a page-view beacon, and it
 #     is the only third-party script the site is allowed to load. Remove
 #     it if the deployment uses the same-origin Payment Link fallback.
-#   - connect-src is 'self' on purpose: the billing server has no CORS
-#     middleware, so in a real deployment it MUST share the site's domain.
+#   - connect-src allows the billing API on pay.data-agent.me. It is a
+#     same-site subdomain of this storefront, so the account cookie is sent
+#     and the API answers with explicit CORS credentials for this origin.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.razorpay.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.razorpay.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://pay.data-agent.me; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY

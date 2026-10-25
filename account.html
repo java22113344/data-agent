@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="favicon_io/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png?v=14fe33b9">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png?v=311b581c">
+<link rel="apple-touch-icon" href="favicon_io/apple-touch-icon.png?v=951b8ec9">
+<link rel="manifest" href="favicon_io/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account &mdash; DataAgent</title>
+  <meta name="description" content="Sign in to your DataAgent billing account to see your plan, renewal date and purchase history. The desktop app still runs locally with its own account.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DataAgent">
+  <meta property="og:title" content="Account &mdash; DataAgent">
+  <meta property="og:description" content="Sign in to see your DataAgent plan, renewal date and purchase history. Billing only: the desktop app keeps its own local account.">
+  <meta property="og:url" content="https://data-agent.me/account.html">
+  <meta property="og:image" content="https://data-agent.me/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="DataAgent - Where your data lives">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Account &mdash; DataAgent">
+  <meta name="twitter:description" content="Sign in to see your DataAgent plan, renewal date and purchase history. Billing only: the desktop app keeps its own local account.">
+  <meta name="twitter:image" content="https://data-agent.me/og-image.png">
+  <link rel="stylesheet" href="css/style.css?v=66c4bb70">
+  <link rel="stylesheet" href="css/pro.css?v=7ca81bf1">
+  <link rel="stylesheet" href="css/premium.css?v=c06631c7">
+<link href="css/fonts.css?v=d45f7dc1" rel="stylesheet">
+  <style>
+    .account-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 820px) {
+      .account-grid { grid-template-columns: 1fr; }
+    }
+    .account-card {
+      padding: 28px;
+      border-radius: 18px;
+      background: var(--glass, rgba(255, 255, 255, .04));
+      border: 1px solid var(--line, rgba(255, 255, 255, .12));
+      box-shadow: var(--shadow-card, 0 18px 50px rgba(0, 0, 0, .18));
+    }
+    .account-card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+    .account-muted {
+      color: var(--text-secondary, #7386a4);
+      font-size: .92rem;
+      line-height: 1.6;
+    }
+    .account-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 18px 0 20px;
+    }
+    .account-tab {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line, rgba(255, 255, 255, .14));
+      background: transparent;
+      color: var(--text-secondary, #7386a4);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .account-tab[aria-selected="true"] {
+      color: var(--text, #fff);
+      border-color: var(--accent, #888);
+      background: rgba(255, 255, 255, .06);
+    }
+    .account-form { display: grid; gap: 14px; }
+    .account-form .form-group { margin: 0; }
+    .account-form .form-input { width: 100%; }
+    .account-form .btn { width: 100%; justify-content: center; }
+    .account-error {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: .9rem;
+      color: #ffb4b4;
+      background: rgba(180, 40, 40, .16);
+      border: 1px solid rgba(220, 90, 90, .4);
+    }
+    .account-error.is-visible { display: block; }
+    .account-error.is-success {
+      color: #86efac;
+      background: rgba(22, 101, 52, .18);
+      border-color: rgba(74, 222, 128, .4);
+    }
+    .account-verify {
+      grid-column: 1 / -1;
+      border-color: rgba(129, 140, 248, .35);
+    }
+    .account-verify .account-actions { margin-top: 16px; }
+    .account-hidden { display: none !important; }
+    .account-plan {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid var(--line, rgba(255, 255, 255, .16));
+    }
+    .account-facts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 20px 0;
+    }
+    .account-fact-label {
+      display: block;
+      font-size: .74rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-muted, #868686);
+      margin-bottom: 4px;
+    }
+    .account-fact-value { font-weight: 600; }
+    .account-purchases {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: .88rem;
+    }
+    .account-purchases th,
+    .account-purchases td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line, rgba(255, 255, 255, .1));
+      vertical-align: top;
+    }
+    .account-purchases th {
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-muted, #868686);
+    }
+    .account-purchases td { color: var(--text-secondary, #b9c2d0); }
+    .account-empty {
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      color: var(--text-secondary, #7386a4);
+      border: 1px dashed var(--line, rgba(255, 255, 255, .18));
+      margin-top: 12px;
+    }
+    .account-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .account-status {
+      margin-top: 14px;
+      font-size: .9rem;
+      color: var(--text-secondary, #7386a4);
+    }
+  </style>
+</head>
+<body data-fx-scene="calm">
+
+<div class="bg-grid"></div>
+<div class="bg-orbs"></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">DA</div>
+    <span>DataAgent</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="features.html">Features</a></li>
+    <li><a href="comparison.html">Comparison</a></li>
+    <li><a href="docs.html">Docs</a></li>
+    <li><a href="billing.html">Pricing</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="account.html" class="active">Account</a></li>
+    <li><a href="download.html" class="nav-cta">Download</a></li>
+  </ul>
+  <button class="nav-mobile-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main class="main-content">
+  <section class="section">
+    <div class="container" style="max-width: 980px;">
+      <div class="section-header">
+        <div class="section-badge">Billing account</div>
+        <h1 class="section-title">Your <span class="gradient-text">account</span></h1>
+        <p class="section-subtitle">
+          Sign in to see the plan attached to your email, when it renews, and the purchases
+          you have made. This is a billing account only: the desktop app keeps its own local
+          account, and your analytics data never leaves your machine.
+        </p>
+      </div>
+
+      <div id="account-error" class="account-error" role="alert"></div>
+
+      <div id="account-loading" class="account-status">Checking your session&hellip;</div>
+
+      <div id="account-auth" class="account-grid account-hidden">
+        <div class="account-card">
+          <h2 id="auth-heading">Sign in</h2>
+          <p class="account-muted">Use the same email you paid with. No dataset is downloaded or uploaded here.</p>
+
+          <div class="account-tabs" role="tablist" aria-label="Account access">
+            <button type="button" class="account-tab" id="tab-login" role="tab"
+                    aria-selected="true" aria-controls="login-form">Sign in</button>
+            <button type="button" class="account-tab" id="tab-register" role="tab"
+                    aria-selected="false" aria-controls="register-form">Create account</button>
+          </div>
+
+          <form id="login-form" class="account-form" aria-labelledby="auth-heading">
+            <div class="form-group">
+              <label class="form-label" for="login-email">Email</label>
+              <input class="form-input" id="login-email" name="email" type="email"
+                     autocomplete="email" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="login-password">Password</label>
+              <input class="form-input" id="login-password" name="password" type="password"
+                     autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </form>
+
+          <form id="register-form" class="account-form account-hidden" aria-labelledby="auth-heading">
+            <div class="form-group">
+              <label class="form-label" for="register-email">Email</label>
+              <input class="form-input" id="register-email" name="email" type="email"
+                     autocomplete="email" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="register-password">Password</label>
+              <input class="form-input" id="register-password" name="password" type="password"
+                     autocomplete="new-password" minlength="8" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="register-confirm">Confirm password</label>
+              <input class="form-input" id="register-confirm" name="confirm" type="password"
+                     autocomplete="new-password" minlength="8" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Create account</button>
+            <p class="account-muted" style="margin:0;">
+              Creating an account does not change your plan. A purchase is attached to the
+              email you pay with; sign in here with that address to see it.
+            </p>
+          </form>
+        </div>
+
+        <div class="account-card">
+          <h2>Why sign in?</h2>
+          <p class="account-muted">
+            Checkout already attaches a plan to the email you pay with. Signing in lets you
+            confirm the plan, see the renewal date, and review past purchases in one place.
+            You can still buy without signing in first.
+          </p>
+          <div class="account-actions">
+            <a class="btn btn-secondary" href="billing.html">View pricing</a>
+            <a class="btn btn-secondary" href="contact.html">Contact us</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="account-panel" class="account-grid account-hidden">
+        <div id="account-verify" class="account-card account-verify account-hidden">
+          <span class="account-plan" id="account-verify-badge">Unverified</span>
+          <h2 style="margin-top:14px;">Verify your email</h2>
+          <p class="account-muted">
+            We sent a confirmation link to <strong id="account-verify-email"></strong>.
+            Open it to see the plan and purchase history attached to this address.
+            Until then, those details stay hidden.
+          </p>
+          <p class="account-muted" id="account-verify-hint">
+            The link expires in 24 hours. Only the newest link works.
+          </p>
+          <div class="account-actions">
+            <button type="button" class="btn btn-secondary" id="account-resend">
+              Resend verification email
+            </button>
+            <button type="button" class="btn btn-secondary" id="account-logout-unverified">
+              Sign out
+            </button>
+          </div>
+        </div>
+
+        <div class="account-card" id="account-plan-card">
+          <span class="account-plan" id="account-plan">Free</span>
+          <h2 style="margin-top:14px;">Signed in</h2>
+          <p class="account-muted" id="account-email">&nbsp;</p>
+
+          <div class="account-facts">
+            <div>
+              <span class="account-fact-label">Plan</span>
+              <span class="account-fact-value" id="account-plan-name">Free</span>
+            </div>
+            <div>
+              <span class="account-fact-label">Status</span>
+              <span class="account-fact-value" id="account-status">Free</span>
+            </div>
+            <div>
+              <span class="account-fact-label">Renews / expires</span>
+              <span class="account-fact-value" id="account-expiry">No expiry</span>
+            </div>
+            <div>
+              <span class="account-fact-label">Auto-renew</span>
+              <span class="account-fact-value" id="account-renew">Not applicable</span>
+            </div>
+          </div>
+
+          <div class="account-actions">
+            <a class="btn btn-primary" href="billing.html">Upgrade or renew</a>
+            <button type="button" class="btn btn-secondary" id="account-logout">Sign out</button>
+          </div>
+        </div>
+
+        <div class="account-card" id="account-purchases-card">
+          <h2>Purchase history</h2>
+          <p class="account-muted">Only completed purchases linked to this email are shown.</p>
+          <div id="account-purchases"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:4px;">
+          <div class="nav-logo-icon">DA</div>
+          <span>DataAgent</span>
+        </a>
+        <p>AI-powered data analytics platform. Ask questions, explore with SQL, build dashboards, and export to Power BI &mdash; a local-first desktop app, so your data stays on your machine.</p>
+      </div>
+      <div class="footer-col">
+        <h2>Product</h2>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="comparison.html">Comparison</a></li>
+          <li><a href="usecases.html">Use Cases</a></li>
+          <li><a href="billing.html">Pricing</a></li>
+          <li><a href="download.html">Download</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Resources</h2>
+        <ul>
+          <li><a href="docs.html">Getting Started</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Connect</h2>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="security.html">Security</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a data-repo-link="" href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 GOWRI RAJASEKAR GANESH (DataAgent). Open source under AGPL-3.0 &mdash; free tier, paid licences optional.</span>
+      <span>Built with FastAPI + DuckDB + LLMs</span>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" aria-label="Scroll to top">&#8593;</button>
+
+<script src="vendor/gsap/gsap.min.js?v=96c01b81"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js?v=30821939"></script>
+<script src="vendor/gsap/SplitText.min.js?v=5e519ea2"></script>
+<script src="vendor/lenis.min.js?v=d8caa3fb"></script>
+<script src="js/main.js?v=019e89a3"></script>
+<script src="js/fx-core.js?v=dc48dd15"></script>
+<script type="importmap">{ "imports": { "three": "./vendor/three/build/three.module.js", "three/addons/": "./vendor/three/examples/jsm/" } }</script>
+<script type="module" src="js/fx-webgl.js?v=c8c88ea7"></script>
+<script>
+  window.BILLING_API_URL = 'https://pay.data-agent.me';
+</script>
+<script src="js/account.js?v=54170b4b"></script>
+</body>
+</html>
