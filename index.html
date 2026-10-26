@@ -25,6 +25,66 @@
   <meta name="twitter:title" content="DataAgent — Where Your Data Lives">
   <meta name="twitter:description" content="Free Windows .exe download. Ask questions in natural language, explore data with SQL, build dashboards, and export to Power BI — powered by local LLMs.">
   <meta name="twitter:image" content="https://data-agent.me/og-image.png">
+  <!-- Structured data: SoftwareApplication + Organization + WebSite.
+       Unlocks Google rich results; feed answers that quote the product.
+       Keep the description and offers in sync with the pricing page. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "DataAgent",
+    "url": "https://data-agent.me/",
+    "description": "AI-powered local-first data analytics agent for Windows. Ask questions in natural language, explore data with SQL, build dashboards, and export to Power BI — powered by local LLMs. Your data never leaves your machine.",
+    "applicationCategory": "BusinessApplication",
+    "applicationSubCategory": "Data Analytics",
+    "operatingSystem": "Windows 10, Windows 11",
+    "softwareVersion": "1.0.0",
+    "isAccessibleForFree": true,
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Free",
+        "price": "0",
+        "priceCurrency": "INR",
+        "url": "https://data-agent.me/download.html"
+      },
+      {
+        "@type": "Offer",
+        "name": "Pro",
+        "price": "499",
+        "priceCurrency": "INR",
+        "url": "https://data-agent.me/billing.html"
+      },
+      {
+        "@type": "Offer",
+        "name": "Lifetime",
+        "price": "10000",
+        "priceCurrency": "INR",
+        "url": "https://data-agent.me/billing.html"
+      }
+    ],
+    "author": {
+      "@type": "Organization",
+      "name": "DataAgent",
+      "url": "https://data-agent.me/"
+    },
+    "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+    "downloadUrl": "https://data-agent.me/download.html"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "DataAgent",
+    "url": "https://data-agent.me/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "DataAgent",
+      "url": "https://data-agent.me/"
+    }
+  }
+  </script>
 <!-- The webfonts are vendored (website/vendor/fonts/, CSS in css/fonts.css).
      They used to come from fonts.googleapis.com, which sent every visitor's
      IP to a third party on every page view - on the site of a product that
