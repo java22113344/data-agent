@@ -1,0 +1,12 @@
+# DataAgent marketing site - Cloudflare Pages redirects.
+#
+# Cloudflare Pages automatically serves extensionless URLs by appending
+# .html (/about -> about.html), so most pages need no rule. These entries
+# are the mappings where no same-named file exists.
+#
+# 200 = REWRITE, not a redirect: the visitor keeps the clean URL (/pricing)
+# and the host serves /billing.html. A 301/302 would put the .html in the
+# address bar and change the canonical URL of the page.
+
+/pricing  /billing.html  200
+/404      /404.html      200
